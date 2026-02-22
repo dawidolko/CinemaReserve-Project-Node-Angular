@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-dark: #0b0e17;
+  --bg-surface: #121829;
+  --bg-surface-light: #1a2138;
+  --bg-surface-hover: #222b45;
+  --primary: #e50914;
+  --primary-hover: #b2070f;
+  --primary-light: rgba(229, 9, 20, 0.15);
+  --accent: #d4a843;
+  --accent-light: rgba(212, 168, 67, 0.15);
+  --text: #f0f0f0;
+  --text-secondary: #8892a4;
+  --text-muted: #5a6478;
+  --success: #00c853;
+  --success-light: rgba(0, 200, 83, 0.12);
+  --error: #ff3d3d;
+  --error-light: rgba(255, 61, 61, 0.12);
+  --warning: #ff9800;
+  --border: #1e2a45;
+  --border-light: #2a3655;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --transition: 0.2s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  @apply font-inter bg-bg-dark text-cinema-text antialiased leading-relaxed;
+}
+
+a { @apply text-inherit no-underline; }
+button { font-family: inherit; }
+
+// Scrollbar
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+  &:hover { background: var(--border-light); }
+}
+
+// ===== COMPONENT LAYER =====
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-[10px]
+           border-0 rounded-cinema text-[0.9rem] font-semibold
+           cursor-pointer transition-all whitespace-nowrap;
+  }
+  .btn-primary {
+    @apply bg-primary text-white;
+    &:hover { @apply bg-primary-hover -translate-y-px; }
+  }
+  .btn-outline {
+    @apply bg-transparent border border-border-light text-cinema-text;
+    &:hover { @apply border-primary text-primary; }
+  }
+  .btn-ghost {
+    @apply bg-transparent text-text-secondary;
+    &:hover { @apply text-cinema-text bg-bg-surface-light; }
+  }
+  .btn-accent {
+    @apply bg-accent text-[#1a1a1a];
+    &:hover { background: #c49a3a; }
+  }
+  .btn-sm { @apply px-[14px] py-[6px] text-[0.8rem]; }
+  .btn-lg { @apply px-8 py-[14px] text-base; }
+  .btn:disabled { @apply opacity-50 cursor-not-allowed translate-y-0; }
+
+  .badge {
+    @apply inline-flex items-center px-[10px] py-[3px]
+           rounded-full text-xs font-semibold tracking-wide;
+  }
+  .badge-primary { @apply text-primary; background: var(--primary-light); }
+  .badge-accent { @apply text-accent; background: var(--accent-light); }
+  .badge-success { @apply text-success; background: var(--success-light); }
+  .badge-error { @apply text-error; background: var(--error-light); }
+
+  .card {
+    @apply bg-bg-surface border border-border-dark rounded-cinema-lg transition-all;
+  }
+
+  .form-group {
+    @apply mb-5;
+    label {
+      @apply block text-text-secondary text-[0.85rem] font-medium mb-1.5;
+    }
+    input, textarea, select {
+      @apply w-full px-4 py-3 bg-bg-dark border border-border-dark rounded-cinema
+             text-cinema-text font-inter text-[0.95rem] transition-colors;
+      &:focus {
+        @apply outline-none border-primary;
+        box-shadow: 0 0 0 3px var(--primary-light);
+      }
+      &::placeholder { @apply text-text-muted; }
+    }
+    textarea { @apply resize-y min-h-[80px]; }
+    select {
+      @apply appearance-none pr-9;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892a4' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      option { @apply bg-bg-dark text-cinema-text; }
+    }
+  }
+
+  // Hamburger menu animation
+  .hamburger {
+    @apply flex flex-col gap-[5px] w-5 cursor-pointer;
+    span {
+      @apply block w-full h-[2px] bg-cinema-text transition-all duration-300 origin-center;
+    }
+    &.active {
+      span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      span:nth-child(2) { @apply opacity-0; }
+      span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    }
+  }
+
+  // Toggle switch
+  .toggle-slider {
+    @apply w-10 h-[22px] rounded-full relative transition-colors;
+    background: var(--border);
+    &::after {
+      content: '';
+      @apply absolute top-[3px] left-[3px] w-4 h-4 bg-white rounded-full transition-transform;
+    }
+  }
+  input:checked + .toggle-slider {
+    @apply bg-success;
+    &::after { @apply translate-x-[18px]; }
+  }
+
+  // Seat shape
+  .seat {
+    @apply w-[38px] h-[34px] border-0 cursor-pointer transition-all text-[0.7rem] font-bold text-white;
+    border-radius: 6px 6px 3px 3px;
+    &:hover:not(:disabled) { @apply -translate-y-px brightness-110; }
+    &:disabled { @apply cursor-not-allowed; }
+  }
+
+  // Admin table
+  .admin-table {
+    @apply w-full border-collapse;
+    th, td { @apply px-4 py-3 text-left text-[0.85rem] whitespace-nowrap; }
+    th { @apply text-text-muted font-medium bg-bg-surface-light border-b border-border-dark; }
+    td { @apply text-text-secondary border-b border-border-dark; }
+    strong { @apply text-cinema-text; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+  }
+}
+
+// ===== UTILITY LAYER =====
+@layer utilities {
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

@@ -1,0 +1,53 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: cinema-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cinema_reserve
+      MYSQL_USER: cinema_user
+      MYSQL_PASSWORD: cinema_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: .tools/docker/Dockerfile.backend
+    container_name: cinema-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: cinema_reserve
+      DB_USER: cinema_user
+      DB_PASSWORD: cinema_password
+      JWT_SECRET: cinema-reserve-jwt-secret-key-2024
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: .tools/docker/Dockerfile.frontend
+    container_name: cinema-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
