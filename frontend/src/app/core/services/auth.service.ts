@@ -9,6 +9,7 @@ export interface User {
   firstName: string;
   lastName: string;
   role: 'user' | 'admin';
+  avatarUrl?: string;
 }
 
 interface AuthResponse {
@@ -46,6 +47,15 @@ export class AuthService {
   login(data: { email: string; password: string }) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
       tap((res) => this.handleAuth(res))
+    );
+  }
+
+  updateProfile(data: Partial<{ firstName: string; lastName: string; email: string; avatarUrl: string; password: string }>) {
+    return this.http.put<User>(`${this.apiUrl}/profile`, data).pipe(
+      tap((user) => {
+        this.currentUser.set(user);
+        localStorage.setItem('user', JSON.stringify(user));
+      })
     );
   }
 

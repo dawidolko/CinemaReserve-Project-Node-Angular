@@ -35,6 +35,10 @@ const Movie = sequelize.define('Movie', {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  trailerUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = Movie;

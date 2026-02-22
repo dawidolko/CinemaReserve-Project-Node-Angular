@@ -45,6 +45,13 @@ interface SeatInfo {
               <!-- Seat Map -->
               <div class="flex flex-col items-center gap-[5px] mb-6">
                 @for (row of seatRows; track row.rowNumber) {
+                  @if (isFirstVipRow(row.rowNumber)) {
+                    <div class="flex items-center gap-2 my-3 w-full">
+                      <div class="flex-1 h-px bg-accent/30"></div>
+                      <span class="text-accent text-[0.7rem] font-semibold tracking-[2px] px-3">VIP SECTION</span>
+                      <div class="flex-1 h-px bg-accent/30"></div>
+                    </div>
+                  }
                   <div class="flex items-center gap-2">
                     <span class="text-text-muted text-xs w-[18px] text-center font-medium">{{ getRowLabel(row.rowNumber) }}</span>
                     <div class="flex gap-1">
@@ -67,11 +74,11 @@ interface SeatInfo {
               </div>
 
               <!-- Legend -->
-              <div class="flex justify-center gap-5">
+              <div class="flex justify-center gap-5 flex-wrap">
                 <div class="flex items-center gap-1.5 text-text-secondary text-[0.8rem]"><span class="legend-dot bg-seat-free"></span> Available</div>
                 <div class="flex items-center gap-1.5 text-text-secondary text-[0.8rem]"><span class="legend-dot bg-seat-selected"></span> Selected</div>
                 <div class="flex items-center gap-1.5 text-text-secondary text-[0.8rem]"><span class="legend-dot bg-bg-surface-light opacity-50"></span> Taken</div>
-                <div class="flex items-center gap-1.5 text-text-secondary text-[0.8rem]"><span class="legend-dot bg-seat-vip"></span> VIP</div>
+                <div class="flex items-center gap-1.5 text-text-secondary text-[0.8rem]"><span class="legend-dot legend-vip"></span> VIP</div>
               </div>
             </div>
 
@@ -95,6 +102,7 @@ interface SeatInfo {
                       <span class="px-2.5 py-1 rounded text-[0.8rem] font-semibold"
                             [class]="seat.seatType === 'vip' ? 'bg-accent/15 text-accent' : 'bg-seat-selected/15 text-seat-selected'">
                         {{ getRowLabel(seat.row) }}{{ seat.number }}
+                        @if (seat.seatType === 'vip') { <span class="text-[0.6rem] ml-0.5 opacity-75">VIP</span> }
                       </span>
                     }
                   </div>
@@ -131,8 +139,30 @@ interface SeatInfo {
     }
     .seat-selected { background: #4a90d9 !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(74,144,217,0.4); }
     .seat-taken { background: var(--bg-surface-light) !important; cursor: not-allowed; opacity: 0.5; color: var(--text-muted); }
-    .seat-vip { background: #b8860b; &:hover:not(:disabled) { background: #d4a843; } }
+    .seat-vip {
+      background: linear-gradient(135deg, #d4a843, #b8860b);
+      box-shadow: 0 0 8px rgba(212, 168, 67, 0.3);
+      position: relative;
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #e8c060, #d4a843);
+        box-shadow: 0 0 12px rgba(212, 168, 67, 0.5);
+      }
+      &::after {
+        content: '\\2605';
+        position: absolute;
+        top: -2px;
+        right: 1px;
+        font-size: 7px;
+        color: #fff;
+        line-height: 1;
+      }
+    }
     .legend-dot { width: 18px; height: 18px; border-radius: 4px 4px 2px 2px; }
+    .legend-vip {
+      width: 18px; height: 18px; border-radius: 4px 4px 2px 2px;
+      background: linear-gradient(135deg, #d4a843, #b8860b);
+      box-shadow: 0 0 6px rgba(212, 168, 67, 0.3);
+    }
 
     @media (max-width: 900px) {
       .seat { width: 26px; height: 26px; font-size: 0.6rem; }
@@ -167,6 +197,14 @@ export class SeatSelectComponent implements OnInit {
   }
 
   getRowLabel(row: number): string { return String.fromCharCode(64 + row); }
+
+  isFirstVipRow(rowNumber: number): boolean {
+    const idx = this.seatRows.findIndex(r => r.rowNumber === rowNumber);
+    if (idx <= 0) return this.seatRows[idx]?.seats[0]?.seatType === 'vip';
+    const currentIsVip = this.seatRows[idx]?.seats[0]?.seatType === 'vip';
+    const prevIsVip = this.seatRows[idx - 1]?.seats[0]?.seatType === 'vip';
+    return currentIsVip && !prevIsVip;
+  }
 
   toggleSeat(seat: SeatInfo) {
     if (seat.taken) return;

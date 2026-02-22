@@ -10,6 +10,7 @@ export interface Movie {
   genre: string;
   director: string;
   releaseDate: string;
+  trailerUrl?: string;
 }
 
 @Injectable({ providedIn: 'root' })

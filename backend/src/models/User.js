@@ -30,10 +30,20 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('user', 'admin'),
     defaultValue: 'user',
   },
+  avatarUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 User.beforeCreate(async (user) => {
   user.password = await bcrypt.hash(user.password, 10);
+});
+
+User.beforeUpdate(async (user) => {
+  if (user.changed('password')) {
+    user.password = await bcrypt.hash(user.password, 10);
+  }
 });
 
 User.prototype.comparePassword = async function (password) {

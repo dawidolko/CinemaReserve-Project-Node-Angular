@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MovieService } from '../../core/services/movie.service';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -12,9 +13,9 @@ import { AuthService } from '../../core/services/auth.service';
     @if (movie) {
       <div class="relative pb-10">
         <!-- Backdrop -->
-        <div class="absolute top-0 left-0 right-0 h-[450px] overflow-hidden">
-          <img [src]="movie.posterUrl" alt="" class="w-full h-full object-cover opacity-15 blur-lg scale-110" />
-          <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,14,23,0.6), var(--bg-dark) 90%)"></div>
+        <div class="absolute top-0 left-0 right-0 h-[550px] overflow-hidden">
+          <img [src]="movie.posterUrl" alt="" class="w-full h-full object-cover opacity-25 blur-md scale-110" />
+          <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,14,23,0.5), var(--bg-dark) 85%)"></div>
         </div>
 
         <div class="relative z-10 max-w-[1100px] mx-auto px-6 pt-10">
@@ -31,7 +32,16 @@ import { AuthService } from '../../core/services/auth.service';
                 <span class="text-text-secondary text-[0.9rem]">Director: <strong class="text-cinema-text">{{ movie.director }}</strong></span>
                 <span class="text-text-secondary text-[0.9rem]">Release: <strong class="text-cinema-text">{{ movie.releaseDate | date:'dd MMM yyyy' }}</strong></span>
               </div>
-              <p class="text-text-secondary text-base leading-[1.8]">{{ movie.description }}</p>
+              <p class="text-text-secondary text-base leading-[1.8] mb-5">{{ movie.description }}</p>
+
+              @if (movie.trailerUrl) {
+                <button class="btn btn-outline btn-lg gap-2" (click)="showTrailer = true">
+                  <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.841z"/>
+                  </svg>
+                  Watch Trailer
+                </button>
+              }
             </div>
           </div>
 
@@ -78,6 +88,22 @@ import { AuthService } from '../../core/services/auth.service';
             </div>
           </div>
         </div>
+
+        <!-- Trailer Modal -->
+        @if (showTrailer && movie.trailerUrl) {
+          <div class="fixed inset-0 z-[1100] flex items-center justify-center bg-black/85 backdrop-blur-sm" (click)="showTrailer = false">
+            <div class="relative w-full max-w-[900px] mx-4" (click)="$event.stopPropagation()">
+              <button class="absolute -top-12 right-0 flex items-center gap-1.5 text-text-secondary text-sm font-medium hover:text-cinema-text transition-colors"
+                      (click)="showTrailer = false">
+                <span>Close</span>
+                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+              </button>
+              <div class="relative pb-[56.25%] rounded-cinema-lg overflow-hidden shadow-cinema-lg">
+                <iframe [src]="safeTrailerUrl" class="absolute inset-0 w-full h-full" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     } @else {
       <div class="flex justify-center py-24">
@@ -93,8 +119,14 @@ export class MovieDetailComponent implements OnInit {
   movie: any;
   uniqueDates: string[] = [];
   selectedDate = '';
+  showTrailer = false;
 
-  constructor(private route: ActivatedRoute, private movieService: MovieService, public auth: AuthService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private movieService: MovieService,
+    public auth: AuthService,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -118,5 +150,9 @@ export class MovieDetailComponent implements OnInit {
     return this.movie.Screenings
       .filter((s: any) => new Date(s.startTime).toISOString().split('T')[0] === this.selectedDate)
       .sort((a: any, b: any) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+  }
+
+  get safeTrailerUrl(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.movie?.trailerUrl + '?autoplay=1');
   }
 }

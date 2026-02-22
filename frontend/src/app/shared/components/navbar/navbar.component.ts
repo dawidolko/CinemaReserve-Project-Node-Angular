@@ -45,10 +45,16 @@ import { AuthService } from '../../../core/services/auth.service';
             }
 
             <div class="flex items-center gap-2.5 ml-2 pl-4 border-l border-border-dark max-md:ml-0 max-md:pl-0 max-md:border-l-0 max-md:pt-3 max-md:border-t max-md:border-border-dark max-md:w-full">
-              <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[0.8rem] font-bold">
-                {{ auth.user()?.firstName?.charAt(0) }}
-              </div>
-              <span class="text-cinema-text text-[0.85rem] font-medium">{{ auth.user()?.firstName }}</span>
+              <a routerLink="/profile" class="flex items-center gap-2.5 no-underline" (click)="closeMenu()">
+                @if (auth.user()?.avatarUrl) {
+                  <img [src]="auth.user()?.avatarUrl" alt="" class="w-8 h-8 rounded-full object-cover border border-border-dark" />
+                } @else {
+                  <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[0.8rem] font-bold">
+                    {{ auth.user()?.firstName?.charAt(0) }}
+                  </div>
+                }
+                <span class="text-cinema-text text-[0.85rem] font-medium">{{ auth.user()?.firstName }}</span>
+              </a>
               <button class="btn btn-ghost btn-sm" (click)="auth.logout(); closeMenu()">Logout</button>
             </div>
           } @else {
