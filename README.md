@@ -46,6 +46,24 @@ The project demonstrates a modern **Angular 19** standalone-component frontend, 
 
 ---
 
+## 🖼️ Screenshots
+
+| Home — hero & now showing | Movie detail — screening schedule |
+|---|---|
+| [<img src="docs/screenshots/home.webp" alt="CinemaReserve home page with hero banner and a genre-filtered Now Showing grid"/>](docs/screenshots/home.webp) | [<img src="docs/screenshots/movie-detail.webp" alt="Movie detail page with backdrop and screening times grouped by date"/>](docs/screenshots/movie-detail.webp) |
+
+| Seat selection — interactive map | My reservations |
+|---|---|
+| [<img src="docs/screenshots/seat-selection.webp" alt="Interactive seat map with colour-coded available, taken and VIP seats plus a booking summary sidebar"/>](docs/screenshots/seat-selection.webp) | [<img src="docs/screenshots/my-reservations.webp" alt="Reservation list with status badges and cancel options"/>](docs/screenshots/my-reservations.webp) |
+
+| Admin dashboard | Admin — movie management |
+|---|---|
+| [<img src="docs/screenshots/admin-dashboard.webp" alt="Admin dashboard with stat cards, recent reservations table and quick stats"/>](docs/screenshots/admin-dashboard.webp) | [<img src="docs/screenshots/admin-movies.webp" alt="Admin movie management with search, poster previews and inline editing"/>](docs/screenshots/admin-movies.webp) |
+
+> Captured from the running Docker stack with the bundled seed data (20 movies, 12 users, 3 halls, 490 screenings) plus a few sample reservations.
+
+---
+
 ## 🏗️ Architecture
 
 ### Application Layer
