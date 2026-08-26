@@ -38,3 +38,6 @@ Thumbs.db
 *.tmp
 *.bak
 *.orig
+
+# Machine-local Claude settings
+.claude/settings.local.json
