@@ -1,3 +1,5 @@
+name: cinemareserve-project
+
 services:
   db:
     image: mysql:8.0
