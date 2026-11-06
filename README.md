@@ -101,6 +101,12 @@ Browser → Nginx (port 80)
 
 ---
 
+## 🎬 Demo
+
+[![Watch the demo on YouTube](https://img.youtube.com/vi/7ygXIAm0sFc/hqdefault.jpg)](https://youtu.be/7ygXIAm0sFc)
+
+---
+
 ## 🛠️ Technology Stack
 
 ### Frontend
