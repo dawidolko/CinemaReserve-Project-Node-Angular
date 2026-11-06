@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://github.com/dawidolko/CinemaReserve-Project-Node-Angular"><img src="docs/readme/banner.webp" alt="CinemaReserve: fullstack platform. Full-Stack Cinema Seat Reservation Platform - Book cinema seats in real time with a complete CMS-driven admin panel" width="100%"></a>
+</p>
+
 # CinemaReserve
 
 > 🚀 **Full-Stack Cinema Seat Reservation Platform** - Book cinema seats in real time with a complete CMS-driven admin panel
@@ -14,6 +18,8 @@ The project demonstrates a modern **Angular 19** standalone-component frontend, 
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+**[Video](https://youtu.be/7ygXIAm0sFc)** · [Screenshots](#️-screenshots) · [Getting started](#-getting-started)
 
 ---
 
@@ -289,7 +295,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👨‍💻 Author
 
-Created by **[Dawid Olko](https://github.com/dawidolko)**
+**Dawid Olko** · Fullstack / AI Developer
 
-- **Website** — [dawidolko.pl](https://dawidolko.pl/)
-- **LinkedIn** — [@dawidolko](https://www.linkedin.com/in/dawidolko/)
+[Portfolio](https://olkodawid.dawidolko.pl) · [CV](https://cv.dawidolko.pl) · [LinkedIn](https://www.linkedin.com/in/dawidolko/) · [GitHub](https://github.com/dawidolko)
