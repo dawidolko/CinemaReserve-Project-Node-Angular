@@ -42,6 +42,7 @@ import { ContentService } from '../../../core/services/content.service';
 
         <div class="border-t border-border-dark py-5 text-center">
           <span class="text-text-muted text-[0.8rem]">&copy; 2025 CinemaReserve. All rights reserved.</span>
+          <p class="text-text-muted text-[0.8rem] mt-1">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
         </div>
       </div>
     </footer>
